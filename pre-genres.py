@@ -1,16 +1,49 @@
 #%%
-from scipy import sparse
-from numpy import random
+import pandas as pd
+import numpy as np
 
 #%%
-# Demo with sparse matrix.
-##
-# create a 30x1000 dense matrix random matrix.
-D = random.random((30, 1000))
-# keep entries with value < 0.10 (10% of entries in matrix will be non-zero)
-# X is a "full" matrix that is intrinsically sparse.
-X = D * (D < 0.10)  # note: element wise mult
+# 读取songs文件的曲风列。
+path = 'F:\\DataMining\\musicRec\\'
+song_genre = pd.read_csv(path + "songs.csv",
+                         usecols=['genre_ids'], skiprows=lambda x: x > 60)
 
-# convert D into a sparse matrix (type coo_matrix)
-S = sparse.coo_matrix(X)
-print(S)
+#%%
+# type(str(song_genre['genre_ids'].values[1]).split('|'))
+# type(np.zeros((40, 3)))
+isinstance(song_genre['genre_ids'].values[1], str)
+i = 1
+x = song_genre['genre_ids'].values[i]
+for i in range(1):
+    if not isinstance(x, str):
+        print(x)
+        continue
+    print(555)
+len(song_genre)
+
+#%%
+temp_array = np.zeros((len(song_genre), 4))
+for i in range(len(song_genre)):
+    x = song_genre['genre_ids'].values[i]
+    if not isinstance(x, str):
+        print(x)
+        continue
+    list_id = str(x).split('|')
+    # song_genre.loc[i, 'genre_count'] = len(list_id)
+    temp_array[i, 0] = len(list_id)
+    if len(list_id) > 0:
+        temp_array[i, 1] = int(list_id[0])
+        if len(list_id) > 1:
+            temp_array[i, 2] = int(list_id[1])
+            if len(list_id) > 2:
+                temp_array[i, 3] = int(list_id[2])
+song_genre['genre_count'] = temp_array[:, 0]
+song_genre['genre_1st'] = temp_array[:, 1]
+song_genre['genre_2nd'] = temp_array[:, 2]
+song_genre['genre_3rd'] = temp_array[:, 3]
+
+
+@staticmethod
+def process_genre_ids(df, col):
+    for i in range(len(df)):
+        if not isinstance(df[col].values)
