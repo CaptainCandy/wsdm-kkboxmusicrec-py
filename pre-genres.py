@@ -29,10 +29,9 @@ for i in range(len(song_genre)):
         print(x)
         continue
     list_id = str(x).split('|')
-    # song_genre.loc[i, 'genre_count'] = len(list_id)
     temp_array[i, 0] = len(list_id)
     if len(list_id) > 0:
-        temp_array[i, 1] = int(list_id[0])
+    temp_array[i, 1] = int(list_id[0])
         if len(list_id) > 1:
             temp_array[i, 2] = int(list_id[1])
             if len(list_id) > 2:
@@ -41,9 +40,3 @@ song_genre['genre_count'] = temp_array[:, 0]
 song_genre['genre_1st'] = temp_array[:, 1]
 song_genre['genre_2nd'] = temp_array[:, 2]
 song_genre['genre_3rd'] = temp_array[:, 3]
-
-
-@staticmethod
-def process_genre_ids(df, col):
-    for i in range(len(df)):
-        if not isinstance(df[col].values)
