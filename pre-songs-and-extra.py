@@ -38,9 +38,9 @@ songs['genre_1st'] = genre_encoder.transform(songs['genre_1st'])
 songs['genre_2nd'] = genre_encoder.transform(songs['genre_2nd'])
 songs['genre_3rd'] = genre_encoder.transform(songs['genre_3rd'])
 #%%
-genre_encoder = LabelEncoder()
-songs['genre_ids'] = genre_encoder.fit_transform(songs['genre_ids'])
-#songs.drop('genre_ids', axis=1, inplace=True)
+# genre_encoder = LabelEncoder()
+# songs['genre_ids'] = genre_encoder.fit_transform(songs['genre_ids'])
+songs.drop('genre_ids', axis=1, inplace=True)
 
 #%%
 
@@ -105,6 +105,7 @@ cols = ['artist_1st', 'composer_1st', 'lyricist_1st']
 for col in cols:
     encoder = LabelEncoder()
     songs[col] = encoder.fit_transform(songs[col])
+songs['language'].fillna(-2, inplace=True)
 encoder = LabelEncoder()
 songs['language'] = encoder.fit_transform(songs['language'])
 songs['song_length'] = np.log1p(songs['song_length'])
@@ -123,8 +124,8 @@ songs_extra['isrc_year'] = isrc.str.slice(5, 7).astype(float)
 songs_extra['isrc_year'] = songs_extra['isrc_year'].apply(
     lambda x: 2000 + x if x < 18 else 1900 + x)
 #%%
-for col in ['isrc_country','isrc_comp','isrc_year']:
-    songs_extra[col].fillna('na',inplace=True)
+for col in ['isrc_country', 'isrc_comp', 'isrc_year']:
+    songs_extra[col].fillna('na', inplace=True)
 encoder1 = LabelEncoder()
 songs_extra['isrc_country'] = encoder1.fit_transform(
     songs_extra['isrc_country'])
@@ -158,7 +159,7 @@ for feat in features:
 songs_extra.drop(['name', 'isrc'], axis=1, inplace=True)
 
 #%%
-songs=songs.merge(songs_extra, on='song_id', how='left')
+songs = songs.merge(songs_extra, on='song_id', how='left')
 #%%
 songs.tail()
 #%%
@@ -167,4 +168,4 @@ songs.columns
 songs_extra.tail()
 #%%
 len(songs)
-songs.to_csv(path + 'songs+extra_pro.csv',index=False)
+songs.to_csv(path + 'songs+extra_pro.csv', index=False)
