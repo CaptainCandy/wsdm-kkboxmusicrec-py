@@ -46,6 +46,9 @@ members['registration_init_time'] = members['registration_init_time'].apply(lamb
 members['expiration_date'] = members['expiration_date'].apply(lambda x:
                                                               time.mktime(time.strptime(str(x), '%Y%m%d')))
 #%%
+for col in ['registration_init_time', 'expiration_date']:
+    members[col] = np.log1p(members[col])
+    #members[col] = members[col].apply(lambda x: np.log1p(x))
 members.tail()
 #%%
 
@@ -62,3 +65,4 @@ def check_age(x):
 members['bd'] = members['bd'].apply(check_age)
 #%%
 members.to_csv(path + 'members_encode.csv', index=False)
+print('member done')

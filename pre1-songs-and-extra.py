@@ -8,7 +8,7 @@ from sklearn.preprocessing import LabelEncoder
 path = 'F:\\DataMining\\musicRec\\'
 songs = pd.read_csv(path + "songs.csv")
 #                         ,usecols=['genre_ids'])  # , skiprows=lambda x: x > 60)
-
+print('data loaded')
 #%%
 # 处理属性：风格
 temp_array = np.zeros((len(songs), 4))
@@ -29,7 +29,7 @@ songs['genre_count'] = temp_array[:, 0]
 songs['genre_1st'] = temp_array[:, 1]
 songs['genre_2nd'] = temp_array[:, 2]
 songs['genre_3rd'] = temp_array[:, 3]
-
+print('genre done')
 #%%
 genre_encoder = LabelEncoder()
 genre_encoder.fit((songs.genre_1st.append(
@@ -62,7 +62,7 @@ def get_acl_count_name(x, filter):
 
 
 len_songs = len(songs)
-temp_array = np.zeros((len_songs, 3))
+temp_array = np.zeros((len_songs, 4))
 temp_array_s = np.empty((len_songs, 3), '<U10')
 filter1 = ['and', '&', 'feat']
 filter2 = ['\\', '|', '/']
@@ -81,6 +81,8 @@ for i in range(len_songs):
         songs['lyricist'].values[i], filter2)
     temp_array[i, 2] = count
     temp_array_s[i, 2] = name
+    if songs['artist_name'].values[i].find('feat') != -1:
+        temp_array[i, 3] = 1
 
 for j in range(3):
     encoder = LabelEncoder()
@@ -92,13 +94,14 @@ songs['number_composer'] = temp_array[:, 1]
 songs['composer_1st'] = temp_array_s[:, 1]
 songs['number_lyricist'] = temp_array[:, 2]
 songs['lyricist_1st'] = temp_array_s[:, 2]
+songs['artist_feat'] = temp_array[:, 3]
 
 #%%
 # 丢弃原有的歌手作曲作词
 songs.drop('artist_name', axis=1, inplace=True)
 songs.drop('composer', axis=1, inplace=True)
 songs.drop('lyricist', axis=1, inplace=True)
-
+print('acl done')
 #%%
 # 对新增的三个属性和language与length做重编码
 cols = ['artist_1st', 'composer_1st', 'lyricist_1st']
@@ -109,7 +112,7 @@ songs['language'].fillna(-2, inplace=True)
 encoder = LabelEncoder()
 songs['language'] = encoder.fit_transform(songs['language'])
 songs['song_length'] = np.log1p(songs['song_length'])
-
+print('encoder')
 #%%
 # 读取song_extra_info
 path = 'F:\\DataMining\\musicRec\\'
@@ -125,7 +128,7 @@ songs_extra['isrc_year'] = songs_extra['isrc_year'].apply(
     lambda x: 2000 + x if x < 18 else 1900 + x)
 #%%
 for col in ['isrc_country', 'isrc_comp', 'isrc_year']:
-    songs_extra[col].fillna('na', inplace=True)
+    songs_extra[col].fillna('0', inplace=True)
 encoder1 = LabelEncoder()
 songs_extra['isrc_country'] = encoder1.fit_transform(
     songs_extra['isrc_country'])
@@ -157,7 +160,7 @@ for feat in features:
     songs_extra[feat] = np.log1p(songs_extra[feat])
 
 songs_extra.drop(['name', 'isrc'], axis=1, inplace=True)
-
+print('all done')
 #%%
 songs = songs.merge(songs_extra, on='song_id', how='left')
 #%%
@@ -169,3 +172,4 @@ songs_extra.tail()
 #%%
 len(songs)
 songs.to_csv(path + 'songs+extra_pro.csv', index=False)
+print('out pre process')
