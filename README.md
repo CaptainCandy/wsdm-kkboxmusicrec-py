@@ -77,6 +77,7 @@ KKBOX想看到效果更好的预测方法，以帮助他们更加精准地向用
 
 - genre_ids: `124|324|754`
 - 统计ids个数分布，说明为什么只选前三个
+  - 放分布图
 
 #### 年龄与性别
 
@@ -85,8 +86,16 @@ KKBOX想看到效果更好的预测方法，以帮助他们更加精准地向用
 #### 操作环境
 
 - source system tab
+  - 功能分区（一级目录）
+  - people: 大V用户
+  - listen with: DJ放啥你听啥
 - source screen name
+  - 所在界面（二级目录）
+  - discovery（探索栏）的子页面
+    - discover featured: 包括每日推荐
+    - chart: 榜单
 - source type
+  - 歌曲来源
 - 展示每个属性有哪些取值
 
 ## Data Preparation
@@ -95,7 +104,7 @@ KKBOX想看到效果更好的预测方法，以帮助他们更加精准地向用
 
 - 从 genre_ids 提取出 genre_1st genre_2nd genre_3rd
 - 同一首音乐有多个歌手、作曲、作词的情况，提取第一个人
-- ISRC的分拆
+- ISRC的分拆（略过）
   - 提取每个年份/国家/公司的歌曲数量
 
 ### 会员相关信息
@@ -125,7 +134,7 @@ KKBOX想看到效果更好的预测方法，以帮助他们更加精准地向用
   - 决策树
   - 集成学习 boosting
 - 参数设置
-  - 展示2秒钟
+  - 罗列
 
 ## Evaluation
 
