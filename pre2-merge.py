@@ -9,6 +9,7 @@ path = 'F:\\DataMining\\musicRec\\'
 def skiprule(x): return x > 1000
 
 
+skiprule = None
 coltype = {'genre_1st': np.int16, 'language': np.int16, 'artist_feat': np.int16, 'isrc_year': np.float32,
            'genre_2nd': np.int16, 'genre_3rd': np.int16, 'genre_count': np.int16}
 # skiprule = None
@@ -18,11 +19,6 @@ test = pd.read_csv(path + 'test.csv', skiprows=skiprule)
 songs = pd.read_csv(path + 'songs+extra_pro.csv', dtype=coltype)
 members = pd.read_csv(path + 'members_encode.csv')
 
-'''
-songs['isrc_year'] = songs['isrc_year'].apply(
-    lambda x: '0' if x == 'na' else x)
-songs['isrc_year'] = songs['isrc_year'].astype(np.float)
-'''
 print('loaded')
 #%%
 
@@ -74,11 +70,10 @@ print('merge done')
 #%%
 
 # time stamp
-time = np.empty((len(train) + len(test)), dtype=int)
-# concat = train[['msno', 'song_id']].append(test[['msno', 'song_id']])
-time[:] = range((len(train) + len(test))
-train['time']=time[:len(train)]
-test['time']=time[len(train):len(train) + len(test)]
+time_stamp = np.empty((len(train) + len(test)), dtype=int)
+time_stamp[:] = range((len(train) + len(test))
+train["time_stamp"]=time_stamp[:len(train)]
+test['time_stamp']=time_stamp[len(train):len(train) + len(test)]
 #%%
 train.to_csv(path + 'train_all.csv', index=False)
 test.to_csv(path + 'test_all.csv', index=False)

@@ -164,12 +164,11 @@ print('all done')
 #%%
 songs = songs.merge(songs_extra, on='song_id', how='left')
 #%%
-songs.tail()
+'''songs.tail()
 #%%
 songs.columns
 #%%
-songs_extra.tail()
+songs_extra.tail()'''
 #%%
-len(songs)
 songs.to_csv(path + 'songs+extra_pro.csv', index=False)
 print('out pre process')
