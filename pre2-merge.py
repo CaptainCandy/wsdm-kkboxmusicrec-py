@@ -66,13 +66,14 @@ train = train.merge(songs, on='song_id')
 train = train.merge(members, on='msno')
 test = test.merge(songs, on='song_id')
 test = test.merge(members, on='msno')
+del songs, members
 print('merge done')
 #%%
 
 # time stamp
 time_stamp = np.empty((len(train) + len(test)), dtype=int)
 time_stamp[:] = range((len(train) + len(test))
-train["time_stamp"]=time_stamp[:len(train)]
+train['time_stamp']=time_stamp[0:len(train)]
 test['time_stamp']=time_stamp[len(train):len(train) + len(test)]
 #%%
 train.to_csv(path + 'train_all.csv', index=False)
